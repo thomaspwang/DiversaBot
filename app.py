@@ -1,22 +1,15 @@
 import os
 from dotenv import load_dotenv
-import slack
-from flask import Flask
+from slack_bolt import App
 
-load_dotenv()
-
-SLACK_TOKEN = os.environ.get('SLACK_AUTH_TOKEN')
+load_dotenv('.env')
 SIGNING_SECRET = os.environ.get('SLACK_SIGNING_SECRET')
 
-app = Flask(__name__)
+app = App(
+    token = os.environ.get('SLACK_AUTH_TOKEN'),
+    signing_secret = os.environ.get('SLACK_SIGNING_SECRET')
+)
 
-# slack_event_adapter = SlackEventAdapter(SIGNING_SECRET, '/slack/events', app)
-# client = slack.WebClient(token = SLACK_TOKEN)
-# client.chat_postMessage(channel='#diversaspotting',text='Get ready slayers.')
-
-@app.route("/")
-def start_message():
-    return "DiversaConnected!"
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.start(port=int(os.environ.get("PORT", 3000)))
