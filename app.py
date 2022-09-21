@@ -11,7 +11,7 @@ SIGNING_SECRET = os.environ.get('SLACK_SIGNING_SECRET')
 app = Flask(__name__)
 
 # slack_event_adapter = SlackEventAdapter(SIGNING_SECRET, '/slack/events', app)
-client = slack.WebClient(token = SLACK_TOKEN)
+# client = slack.WebClient(token = SLACK_TOKEN)
 # client.chat_postMessage(channel='#diversaspotting',text='Get ready slayers.')
 
 @app.route("/")
