@@ -3,7 +3,6 @@ from dotenv import load_dotenv
 from slack_bolt import App
 
 load_dotenv('.env')
-SIGNING_SECRET = os.environ.get('SLACK_SIGNING_SECRET')
 
 app = App(
     token = os.environ.get('SLACK_AUTH_TOKEN'),
