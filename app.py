@@ -4,10 +4,7 @@ from slack_bolt import App
 
 load_dotenv('.env')
 
-app = App(
-    token = os.environ.get('SLACK_AUTH_TOKEN'),
-    signing_secret = os.environ.get('SLACK_SIGNING_SECRET')
-)
+app = App(token = os.environ.get('SLACK_AUTH_TOKEN'), signing_secret = os.environ.get('SLACK_SIGNING_SECRET'))
 
 
 if __name__ == "__main__":
