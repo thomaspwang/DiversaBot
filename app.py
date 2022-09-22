@@ -60,6 +60,7 @@ Routes
 
 @app.message("")
 def record_spot(message, say):
+    print(message)
     say("pog")
     
 
