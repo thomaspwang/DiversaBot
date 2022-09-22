@@ -89,7 +89,8 @@ def record_spot(message, say):
             'SPOTTER' : user,
             'SPOTTED' : member_ids,
             'MESSAGE' : message['text']
-        }
+        },
+        ignore_index=True
     )
     save_spot_history()
 
