@@ -5,6 +5,13 @@ import pygsheets
 import pandas as pd
 import re
 
+'''
+TO-DOs
+- Option to flag erroneous diversaspots
+- command to check current stats 
+- command to check leaderboard stats
+'''
+
 
 """
 
@@ -58,13 +65,21 @@ def count_spots(user: str) -> int:
     df = df_spot_history
     return len(df[df['SPOTTER'] == user])
 
+
 """
 
 Routes
 
 """
 
+# Health Check
+@app.message("diversabot health check")
+def message_hello(message, say):
+    print(message)
+    say(f"I'm all up and running! Otherwise, let Tommy know.")
 
+
+# Records DiversaSpots
 @app.message("")
 def record_spot(message, say):
     global df_spot_history
@@ -88,7 +103,8 @@ def record_spot(message, say):
             'TIME' : message['ts'],
             'SPOTTER' : user,
             'SPOTTED' : member_ids,
-            'MESSAGE' : message['text']
+            'MESSAGE' : message['text'],
+            'IMAGE' : message['files'][0]['url_private']
         },
         ignore_index=True
     )
@@ -96,14 +112,6 @@ def record_spot(message, say):
 
     say(f"Hey <@{user}>, you now have {count_spots(user)} DiversaSpots!")
 
-
-# Health Check
-@app.message("diversabot health check")
-def message_hello(message, say):
-    # say() sends a message to the channel where the event was triggered
-    msg = message['text']
-    print(message)
-    say(f"I'm all up and running! Otherwise, let Tommy know.")
 
 
 if __name__ == "__main__":
