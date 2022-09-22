@@ -38,7 +38,8 @@ Helper Functions
 
 """
 
-def save_spot_history(df_spot_history):
+def save_spot_history():
+    global df_spot_history
     sh_spot_history.set_dataframe(
         df=df_spot_history,
         start=(1,1),
@@ -53,6 +54,7 @@ def find_all_mentions(msg: str) -> list:
 
 
 def count_spots(user: str) -> int:
+    global df_spot_history
     df = df_spot_history
     return len(df[df['SPOTTER'] == user])
 
@@ -65,6 +67,7 @@ Routes
 
 @app.message("")
 def record_spot(message, say):
+    global df_spot_history
     member_ids = find_all_mentions(message["text"])
     user = message['user']
 
@@ -88,7 +91,7 @@ def record_spot(message, say):
             'MESSAGE' : message['text']
         }
     )
-    save_spot_history(df_spot_history)
+    save_spot_history()
 
     say(f"Hey <@{user}>, you now have {count_spots(user)} DiversaSpots!")
 
