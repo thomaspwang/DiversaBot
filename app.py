@@ -38,7 +38,7 @@ Helper Functions
 
 """
 
-def save_spot_history():
+def save_spot_history(df_spot_history):
     sh_spot_history.set_dataframe(
         df=df_spot_history,
         start=(1,1),
@@ -88,7 +88,7 @@ def record_spot(message, say):
             'MESSAGE' : message['text']
         }
     )
-    save_spot_history()
+    save_spot_history(df_spot_history)
 
     say(f"Hey <@{user}>, you now have {count_spots(user)} DiversaSpots!")
 
