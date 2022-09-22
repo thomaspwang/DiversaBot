@@ -58,7 +58,7 @@ Routes
 """
 
 
-@app.message()
+@app.message("")
 def record_spot(message, say):
     say("pog")
     
