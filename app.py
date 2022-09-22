@@ -20,7 +20,7 @@ Environment Setup
 
 """
 
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.WARNING)
 
 
 load_dotenv('.env')
@@ -114,7 +114,7 @@ def record_spot(message, client, logger):
 
         reply = f"Hey <@{user}>, you now have {count_spots(user)} DiversaSpots!"
 
-    client.postMessage(
+    client.chat_postMessage(
         channel=channel_id,
         thread_ts=message_ts,
         text=reply
