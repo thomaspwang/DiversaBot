@@ -19,17 +19,17 @@ app = App(
     signing_secret = os.environ.get('SLACK_SIGNING_SECRET')
 )
 
-g_client = pygsheets.authorize(service_file='C:\\Users\\tommy\\Desktop\DiversaBot\\diversabot-363300-f4b5abc8a0c8.json')
+# g_client = pygsheets.authorize(service_file='C:\\Users\\tommy\\Desktop\DiversaBot\\diversabot-363300-f4b5abc8a0c8.json')
 
-sh = g_client.open('DiversaBot')
+# sh = g_client.open('DiversaBot')
 
-sh_spot_history = sh[0]
-df_spot_history = sh_spot_history.get_as_df(
-    has_header=True,
-    index_column=None,
-    nuumerize=True,
-    include_tailing_empty=False,
-    include_tailing_empty_rows=False
+# sh_spot_history = sh[0]
+# df_spot_history = sh_spot_history.get_as_df(
+#     has_header=True,
+#     index_column=None,
+#     nuumerize=True,
+#     include_tailing_empty=False,
+#     include_tailing_empty_rows=False
 )
 
 """
@@ -38,14 +38,14 @@ Helper Functions
 
 """
 
-def save_spot_history():
-    sh_spot_history.set_dataframe(
-        df=df_spot_history,
-        start=(1,1),
-        copy_head=True,
-        extend=True,
-        copy_index=False
-    )
+# def save_spot_history():
+#     sh_spot_history.set_dataframe(
+#         df=df_spot_history,
+#         start=(1,1),
+#         copy_head=True,
+#         extend=True,
+#         copy_index=False
+#     )
 
 def find_all_mentions(msg: str) -> list:
     member_ids = re.findall(r'<@([\w]+)>', msg, re.MULTILINE)
