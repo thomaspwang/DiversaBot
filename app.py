@@ -163,14 +163,15 @@ def record_spot(message, client, logger):
         text=reply
     )
 
-@app.event("reaction_added")
+@app.event({
+    "type": "reaction_added",
+})
 def flag_spot(event, client, logger):
     global df_spot_history
+    logger.debug(event)
 
     if event['reaction'] != "triangular_flag_on_post":
         return
-    
-    logger.debug(event)
 
     spot_user = event['item_user']
     spot_ts = event["item"]["ts"]
