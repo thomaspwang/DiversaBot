@@ -5,6 +5,7 @@ import pygsheets
 import pandas as pd
 import re
 import logging
+import random
 
 '''
 TO-DOs
@@ -72,6 +73,45 @@ def count_spots(user: str) -> int:
     df = df_spot_history
     return len(df[df['SPOTTER'] == user])
 
+def random_greeting() -> str:
+    '''Returns a random greeting'''
+    greetings = [
+        "Hey",
+        "Hi",
+        "What's schlaying",
+        "What poppin'",
+        "Greetings",
+        "DiversaHi",
+        "Attention"
+    ]
+    return random.choice(greetings)
+
+
+def spotter_leaderboard():
+    '''
+    Returns a leaderboard dataframe for the most spots
+    columns = ['COUNT', 'RANK']
+    indexed by SPOTTER
+    '''
+    global df_spot_history
+    counts = df_spot_history.groupby('SPOTTER').count()
+    counts.rename(columns={'SPOTTED':'COUNT'}, inplace=True)
+    counts = counts[['COUNT']]
+    counts['RANK'] = counts['COUNT'].rank(ascending=False, method='dense')
+    counts.sort_values(by='COUNT', inplace=True, ascending=False)
+    return counts
+
+def spotter_leaderboard_position_text(user: str) -> str:
+    '''Return text describing the leaderboard position of the user for number of spots, and the person you're right behind.'''
+    leaderboard = spotter_leaderboard()
+    user_rank = leaderboard.loc[user]['RANK']
+
+    if int(user_rank) == 1:
+        return "Woohoo, you're 1st on the leaderboard." 
+
+    user_in_front_id = leaderboard.index[leaderboard['RANK'] == user_rank - 1].tolist()[0]
+    return f"You're currently #{int(user_rank)} on the leaderboard, right behind <@{user_in_front_id}>."
+
 
 """
 
@@ -94,10 +134,10 @@ def record_spot(message, client, logger):
     member_ids = find_all_mentions(message["text"])
 
     if len(member_ids) == 0:
-        reply = f"Hey <@{user}>, this DiversaSpot doesn't count because you didn't mention anyone! Try again."
+        reply = f"{random_greeting()} <@{user}>, this DiversaSpot doesn't count because you didn't mention anyone! Delete and try again."
     
     elif message['files'][0]['filetype'] != 'jpg' and message['files'][0]['filetype'] != 'png':
-        reply = f"Hiya <@{user}>, This DiversaSpot doesn't count because you didn't attach a JPG or a PNG file! Try again!"
+        reply = f"{random_greeting()} <@{user}>, This DiversaSpot doesn't count because you didn't attach a JPG or a PNG file! Delete and try again."
 
     else:
         df_spot_history = df_spot_history.append(
@@ -112,7 +152,7 @@ def record_spot(message, client, logger):
         )
         save_spot_history()
 
-        reply = f"Hey <@{user}>, you now have {count_spots(user)} DiversaSpots!"
+        reply = f"{random_greeting()} <@{user}>, you now have {count_spots(user)} DiversaSpots! {spotter_leaderboard_position_text(user)}"
 
     client.chat_postMessage(
         channel=channel_id,
