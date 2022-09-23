@@ -21,7 +21,7 @@ Environment Setup
 
 """
 
-logging.basicConfig(level=logging.WARNING)
+logging.basicConfig(level=logging.DEBUG)
 
 
 load_dotenv('.env')
