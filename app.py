@@ -94,6 +94,8 @@ def spotter_leaderboard():
     indexed by SPOTTER
     '''
     global df_spot_history
+
+    df_spot_history = df_spot_history[df_spot_history["FLAGGED"] == "FALSE"]
     counts = df_spot_history.groupby('SPOTTER').count()
     counts.rename(columns={'SPOTTED':'COUNT'}, inplace=True)
     counts = counts[['COUNT']]
@@ -146,7 +148,8 @@ def record_spot(message, client, logger):
                 'SPOTTER' : user,
                 'SPOTTED' : member_ids,
                 'MESSAGE' : message['text'],
-                'IMAGE' : message['files'][0]['url_private']
+                'IMAGE' : message['files'][0]['url_private'],
+                'FLAGGED' : 'FALSE'
             },
             ignore_index=True
         )
@@ -159,6 +162,36 @@ def record_spot(message, client, logger):
         thread_ts=message_ts,
         text=reply
     )
+
+@app.event("reaction_added")
+def flag_spot(event, client, logger):
+    global df_spot_history
+
+    if event['reaction'] != "triangular_flag_on_post":
+        return
+    
+    logger.debug(event)
+
+    spot_user = event['item_user']
+    spot_ts = event["item"]["ts"]
+    flag_user = event['user']
+
+    df_spot_history.loc[df_spot_history['TIME'] == spot_ts, "FLAGGED"] = "TRUE"
+
+    reply = f"{random_greeting()} <@{spot_user}>! This DiversaSpot is flagged and as a result, it is currently not being counted. Please remove all flags for this spot to be counted again."
+
+    channel_id = event["item"]["channel"]
+    client.chat_postMessage(
+        channel=channel_id,
+        thread_ts=spot_ts,
+        text=reply
+    )
+
+
+# @app.event("reaction_added")
+# def unflag_spot(event, client, logger):
+#     global df_spot_history
+
 
 
 @app.error
