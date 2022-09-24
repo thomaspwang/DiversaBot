@@ -135,6 +135,10 @@ def record_spot(message, client, logger):
 
     member_ids = find_all_mentions(message["text"])
 
+    if message_ts in df_spot_history['TIME'].values:
+        logger.warn("DUPLICATE: ", message_ts)
+        return
+
     if len(member_ids) == 0:
         reply = f"{random_greeting()} <@{user}>, this DiversaSpot doesn't count because you didn't mention anyone! Delete and try again."
     
