@@ -82,7 +82,10 @@ def random_greeting() -> str:
         "What poppin'",
         "Greetings",
         "DiversaHi",
-        "Attention"
+        "Attention",
+        "DiversaSLAY",
+        "Rachel wuz here",
+        "Play league with us (-from rachel <3)"
     ]
     return random.choice(greetings)
 
@@ -167,31 +170,31 @@ def record_spot(message, client, logger):
         text=reply
     )
 
-@app.event({
-    "type": "reaction_added",
-})
-def flag_spot(event, client, logger):
-    global df_spot_history
-    logger.debug(event)
+# @app.event({
+#     "type": "reaction_added",
+# })
+# def flag_spot(event, client, logger):
+#     global df_spot_history
+#     logger.debug(event)
 
-    if event['reaction'] != "triangular_flag_on_post":
-        return
+#     if event['reaction'] != "triangular_flag_on_post":
+#         return
 
-    spot_user = event['item_user']
-    spot_ts = event["item"]["ts"]
-    flag_user = event['user']
+#     spot_user = event['item_user']
+#     spot_ts = event["item"]["ts"]
 
-    df_spot_history.loc[df_spot_history['TIME'] == spot_ts, "FLAGGED"] = "TRUE"
-    save_spot_history()
+#     df_spot_history.loc[df_spot_history['TIME'] == spot_ts, "FLAGGED"] = "TRUE"
+#     logger.warn(df_spot_history.loc[df_spot_history['TIME'] == spot_ts, "FLAGGED"])
+#     save_spot_history()
 
-    reply = f"{random_greeting()} <@{spot_user}>! This DiversaSpot is flagged and as a result, it is currently not being counted. Please remove all flags for this spot to be counted again."
+#     reply = f"{random_greeting()} <@{spot_user}>! This DiversaSpot is flagged and as a result, it is currently not being counted. Please remove all flags for this spot to be counted again."
 
-    channel_id = event["item"]["channel"]
-    client.chat_postMessage(
-        channel=channel_id,
-        thread_ts=spot_ts,
-        text=reply
-    )
+#     channel_id = event["item"]["channel"]
+#     client.chat_postMessage(
+#         channel=channel_id,
+#         thread_ts=spot_ts,
+#         text=reply
+#     )
 
 
 # @app.event("reaction_added")
