@@ -38,7 +38,7 @@ df = sh_spot_history.get_as_df(
 )
 
 for i, row in df.iterrows():
-    userid = df.a[i, "SPOTTER"]
+    userid = df.at[i, "SPOTTER"]
     response = app.client.users_info(user=userid)
     name = response["user"]["real_name"]
     df.set_value(i, "NAME", name)
