@@ -41,7 +41,7 @@ for i, row in df.iterrows():
     userid = df.at[i, "SPOTTER"]
     response = app.client.users_info(user=userid)
     name = response["user"]["real_name"]
-    df.set_value(i, "NAME", name)
+    df.at[i, "NAME"] = name
 
 sh_spot_history.set_dataframe(
     df=df,
