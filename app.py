@@ -149,6 +149,8 @@ def record_spot(message, client, logger):
         reply = f"{random_greeting()} <@{user}>, This DiversaSpot doesn't count because you didn't attach a JPG or a PNG file! Delete and try again."
 
     else:
+        response = app.client.users_info(user=user)
+        name = response["user"]["real_name"]
         df_spot_history = df_spot_history.append(
             {
                 'TIME' : message['ts'],
@@ -156,7 +158,8 @@ def record_spot(message, client, logger):
                 'SPOTTED' : member_ids,
                 'MESSAGE' : message['text'],
                 'IMAGE' : message['files'][0]['url_private'],
-                'FLAGGED' : 'FALSE'
+                'FLAGGED' : 'FALSE',
+                'NAME' : name
             },
             ignore_index=True
         )
