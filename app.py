@@ -191,7 +191,7 @@ def post_leaderboard(message, client):
 			"type": "header",
 			"text": {
 				"type": "plain_text",
-				"text": ":trophy:  DT Spot Leaderboard  :trophy:"
+				"text": ":trophy:  DiversaSpot Leaderboard  :trophy:"
 			}
 		},
 		{
