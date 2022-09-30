@@ -115,7 +115,7 @@ def spotter_leaderboard_position_text(user: str) -> str:
     if int(user_rank) == 1:
         return "Woohoo, you're 1st on the leaderboard." 
 
-    user_in_front_id = leaderboard.index[leaderboard['RANK'] == int(user_rank) - 1].tolist()[0]
+    user_in_front_id = leaderboard.index[leaderboard['RANK'] == int(user_rank) - 1].tolist()[0][0]
     return f"You're currently #{int(user_rank)} on the leaderboard, right behind <@{user_in_front_id}>."
 
 
@@ -202,9 +202,6 @@ def post_leaderboard(message, client):
 					"type": "mrkdwn"
 				}
 			]
-		},
-		{
-			"type": "divider"
 		},
 		{
 			"type": "section",
