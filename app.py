@@ -174,7 +174,7 @@ def record_spot(message, client, logger):
     )
 
 
-@app.message(".diversabot leaderboard")
+@app.message("diversabot leaderboard")
 def post_leaderboard(message, say):
     leaderboard = spotter_leaderboard()
     say(leaderboard.to_markdown())
