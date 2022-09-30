@@ -99,7 +99,7 @@ def spotter_leaderboard():
     global df_spot_history
 
     df_spot_history = df_spot_history[df_spot_history["FLAGGED"] == "FALSE"]
-    counts = df_spot_history.groupby('SPOTTER').count()
+    counts = df_spot_history.groupby(['SPOTTER', 'NAME']).count()
     counts.rename(columns={'SPOTTED':'COUNT'}, inplace=True)
     counts = counts[['COUNT']]
     counts['RANK'] = counts['COUNT'].rank(ascending=False, method='dense')
@@ -177,6 +177,7 @@ def record_spot(message, client, logger):
 @app.message("diversabot leaderboard")
 def post_leaderboard(message, say):
     leaderboard = spotter_leaderboard()
+    leaderboard.drop(['SPOTTER'], inplace=True)
     say(leaderboard.to_markdown())
 
 # @app.event({
