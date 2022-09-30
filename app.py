@@ -177,7 +177,6 @@ def record_spot(message, client, logger):
 @app.message("diversabot leaderboard")
 def post_leaderboard(message, say):
     leaderboard = spotter_leaderboard()
-    leaderboard.drop(['SPOTTER'], inplace=True)
     say(leaderboard.to_markdown())
 
 # @app.event({
