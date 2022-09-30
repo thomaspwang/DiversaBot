@@ -173,6 +173,12 @@ def record_spot(message, client, logger):
         text=reply
     )
 
+
+@app.message(".diversabot leaderboard")
+def post_leaderboard(message, say):
+    leaderboard = spotter_leaderboard()
+    say(leaderboard.to_markdown())
+
 # @app.event({
 #     "type": "reaction_added",
 # })
