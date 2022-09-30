@@ -99,7 +99,7 @@ def spotter_leaderboard():
     global df_spot_history
 
     df_spot_history = df_spot_history[df_spot_history["FLAGGED"] == "FALSE"]
-    counts = df_spot_history.groupby(['SPOTTER', 'NAME']).count()
+    counts = df_spot_history.groupby(['SPOTTER']).count()
     counts.rename(columns={'SPOTTED':'COUNT'}, inplace=True)
     counts = counts[['COUNT']]
     counts['RANK'] = counts['COUNT'].rank(ascending=False, method='dense')
@@ -114,7 +114,7 @@ def spotter_leaderboard_position_text(user: str) -> str:
     if int(user_rank) == 1:
         return "Woohoo, you're 1st on the leaderboard." 
 
-    user_in_front_id = leaderboard.index[leaderboard['RANK'] == user_rank - 1].tolist()[0]
+    user_in_front_id = leaderboard.index[leaderboard['RANK'] == int(user_rank) - 1].tolist()[0]
     return f"You're currently #{int(user_rank)} on the leaderboard, right behind <@{user_in_front_id}>."
 
 
