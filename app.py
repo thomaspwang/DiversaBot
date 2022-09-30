@@ -6,6 +6,7 @@ import pandas as pd
 import re
 import logging
 import random
+from datetime import date
 
 '''
 TO-DOs
@@ -94,7 +95,7 @@ def spotter_leaderboard():
     '''
     Returns a leaderboard dataframe for the most spots
     columns = ['COUNT', 'RANK']
-    indexed by SPOTTER
+    indexed by SPOTTER, NAME
     '''
     global df_spot_history
 
@@ -175,9 +176,60 @@ def record_spot(message, client, logger):
 
 
 @app.message("diversabot leaderboard")
-def post_leaderboard(message, say):
+def post_leaderboard(message, client):
     leaderboard = spotter_leaderboard()
-    say(leaderboard.to_markdown())
+    leaderboard = leaderboard.reset_index()
+    message_text = ""
+    for i in range(10):
+        row = leaderboard.iloc[i]
+        message_text += f"*#{i + 1}: {row['NAME']}* with {row['COUNT']} spots \n"
+    
+    channel_id = message["channel"]
+
+    blocks = [
+		{
+			"type": "header",
+			"text": {
+				"type": "plain_text",
+				"text": ":trophy:  DT Spot Leaderboard  :trophy:"
+			}
+		},
+		{
+			"type": "context",
+			"elements": [
+				{
+					"text": f"*{date.today()}*",
+					"type": "mrkdwn"
+				}
+			]
+		},
+		{
+			"type": "divider"
+		},
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": message_text
+			}
+		},
+        {
+			"type": "context",
+			"elements": [
+				{
+					"type": "mrkdwn",
+					"text": "To see your individual stats, type <TBD>!"
+				}
+			]
+		}
+	]
+
+    client.chat_postMessage(
+        channel=channel_id,
+        blocks=blocks
+    )
+
+
 
 # @app.event({
 #     "type": "reaction_added",
