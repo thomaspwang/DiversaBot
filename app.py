@@ -238,7 +238,7 @@ def post_leaderboard(message, client):
         row = leaderboard.iloc[i]
         if row['SPOTTER'] == user:
             message_text += f"***#{i + 1}: {row['NAME']}*** with {row['COUNT']} spots \n"
-            name = row['Name']
+            name = row['NAME']
         else:
             message_text += f"*#{i + 1}: {row['NAME']}* with {row['COUNT']} spots \n"
     
