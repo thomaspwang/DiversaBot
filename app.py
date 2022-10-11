@@ -237,7 +237,7 @@ def post_leaderboard(message, client):
     for i in range(max(0, rank - 4), rank + 5):
         row = leaderboard.iloc[i]
         if row['SPOTTER'] == user:
-            message_text += f"*#{i + 1}: {row['NAME']}* with {row['COUNT']} spots \n"
+            message_text += f"_*#{i + 1}: {row['NAME']} with {row['COUNT']} spots*_ \n"
             name = row['NAME']
         else:
             message_text += f"#{i + 1}: {row['NAME']} with {row['COUNT']} spots \n"
