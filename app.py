@@ -234,13 +234,13 @@ def post_leaderboard(message, client):
     name = "None"
     message_text = ""
     rank = leaderboard.index[leaderboard['SPOTTER']==user].tolist()[0]
-    for i in range(max(0, rank - 5), rank + 5):
+    for i in range(max(0, rank - 4), rank + 5):
         row = leaderboard.iloc[i]
         if row['SPOTTER'] == user:
-            message_text += f"***#{i + 1}: {row['NAME']}*** with {row['COUNT']} spots \n"
+            message_text += f"*#{i + 1}: {row['NAME']}* with {row['COUNT']} spots \n"
             name = row['NAME']
         else:
-            message_text += f"*#{i + 1}: {row['NAME']}* with {row['COUNT']} spots \n"
+            message_text += f"#{i + 1}: {row['NAME']} with {row['COUNT']} spots \n"
     
     channel_id = message["channel"]
 
