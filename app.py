@@ -215,7 +215,7 @@ def post_leaderboard(message, client):
 			"elements": [
 				{
 					"type": "mrkdwn",
-					"text": "To see your individual stats, type <TBD>!"
+					"text": "To see your individual stats, type 'diversabot stats'!"
 				}
 			]
 		}
@@ -226,6 +226,54 @@ def post_leaderboard(message, client):
         blocks=blocks
     )
 
+@app.message("diversabot stats")
+def post_leaderboard(message, client):
+    leaderboard = spotter_leaderboard()
+    leaderboard = leaderboard.reset_index()
+    user = message["user"]
+    name = "None"
+    message_text = ""
+    rank = leaderboard.index[leaderboard['SPOTTER']==user].tolist()[0]
+    for i in range(max(0, rank - 5), rank + 5):
+        row = leaderboard.iloc[i]
+        if row['SPOTTER'] == user:
+            message_text += f"***#{i + 1}: {row['NAME']}*** with {row['COUNT']} spots \n"
+            name = row['Name']
+        else:
+            message_text += f"*#{i + 1}: {row['NAME']}* with {row['COUNT']} spots \n"
+    
+    channel_id = message["channel"]
+
+    blocks = [
+        {
+            "type": "header",
+            "text": {
+                "type": "plain_text",
+                "text": f":trophy:  DiversaSpot Stats for {name} :trophy:"
+            }
+        },
+        {
+            "type": "context",
+            "elements": [
+                {
+                    "text": f"*{date.today()}*",
+                    "type": "mrkdwn"
+                }
+            ]
+        },
+        {
+            "type": "section",
+            "text": {
+                "type": "mrkdwn",
+                "text": message_text
+            }
+        }
+    ]
+
+    client.chat_postMessage(
+        channel=channel_id,
+        blocks=blocks
+    )
 
 
 # @app.event({
