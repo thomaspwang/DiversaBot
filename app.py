@@ -302,7 +302,11 @@ def post_leaderboard(message, client):
 
 
 @app.event("reaction_added")
-def unflag_spot(body, logger):
+def flag_spot(body, logger):
+    logger.warning(f"Request body: {body}")
+
+@app.event("reaction_removed")
+def flag_spot(body, logger):
     logger.warning(f"Request body: {body}")
 
 
