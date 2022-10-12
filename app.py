@@ -276,9 +276,7 @@ def post_leaderboard(message, client):
     )
 
 
-# @app.event({
-#     "type": "reaction_added",
-# })
+# @app.event("reaction_added")
 # def flag_spot(event, client, logger):
 #     global df_spot_history
 #     logger.debug(event)
@@ -303,10 +301,9 @@ def post_leaderboard(message, client):
 #     )
 
 
-# @app.event("reaction_added")
-# def unflag_spot(event, client, logger):
-#     global df_spot_history
-
+@app.event("reaction_added")
+def unflag_spot(body, logger):
+    logger.warning(f"Request body: {body}")
 
 
 @app.error
