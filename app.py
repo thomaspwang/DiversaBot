@@ -285,7 +285,7 @@ def flag_spot(message, client, logger):
         message_ts = message['ts']
     else:
         spot_ts = message['thread_ts']
-        nessage_ts = spot_ts
+        message_ts = spot_ts
         if spot_ts not in df_spot_history['TIME'].values:
             reply = f"{random_greeting()} <@{flagger}>, this is not a valid DiversaSpot to flag!"
         else:
