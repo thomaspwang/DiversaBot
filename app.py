@@ -292,7 +292,7 @@ def flag_spot(message, client, logger):
             spotter = df_spot_history.loc[df_spot_history['TIME'] == spot_ts, 'SPOTTER'].values[0]
             df_spot_history.loc[df_spot_history['TIME'] == spot_ts, 'FLAGGED'] = "TRUE"
             save_spot_history()
-            reply = f"{random_greeting()} <@{spotter}>, this spot has been flagged by <@{flagger}> as they believe it is in violation of the official DiversaSpotting rules and regulations. If you would like to review the official DiversaSpotting rules and regulations, you can type 'diversabot rules'. If you would like to dispute this flag, please @ Thomas Wang in this thread."
+            reply = f"{random_greeting()} <@{spotter}>, this spot has been flagged by <@{flagger}> as they believe it is in violation of the official DiversaSpotting rules and regulations. If you would like to review the official DiversaSpotting rules and regulations, you can type 'diversabot rules'. If you would like to dispute this flag, please @ Thomas Wang in this thread with a relevant explanation."
     
     client.chat_postMessage(
         channel=channel_id,
