@@ -40,6 +40,7 @@ sh_spot_history = sh[0]
 df_spot_history = sh_spot_history.get_as_df(
     has_header=True,
     index_column=None,
+    numerize=False,
     include_tailing_empty=False,
     include_tailing_empty_rows=False
 )
@@ -84,8 +85,7 @@ def random_greeting() -> str:
         "DiversaHi",
         "Attention",
         "DiversaSLAY",
-        "Rachel wuz here",
-        "Play league with us (-from rachel <3)"
+        "Howdy"
     ]
     return random.choice(greetings)
 
@@ -277,7 +277,31 @@ def post_leaderboard(message, client):
 @app.message("diversabot flag")
 def flag_spot(message, client, logger):
     logger.warn(message)
+    flagger = message['user']
+    channel_id = message["channel"]
+
+    if 'thread_ts' not in message:
+        reply = f"{random_greeting()} <@{flagger}>, to flag a spot, you have to reply 'diversaspot flag' in the thread of the spot that you'd like to flag."
+        message_ts = message['ts']
+    else:
+        spot_ts = message['thread_ts']
+        nessage_ts = spot_ts
+        if spot_ts not in df_spot_history['TIME'].values:
+            reply = f"{random_greeting()} <@{flagger}>, this is not a valid DiversaSpot to flag!"
+        else:
+            spotter = df_spot_history.loc[df_spot_history['TIME'] == spot_ts, 'SPOTTER'][0]
+            df_spot_history.loc[df_spot_history['TIME'] == spot_ts, 'FLAGGED'] = "TRUE"
+            save_spot_history()
+            reply = f"{random_greeting()} <@{spotter}>, this spot has been flagged by <@{flagger}> as they believe it is in violation of the \
+                    official DiversaSpotting rules and regulations. \n \n \
+                    If you would like to review the official DiversaSpotting rules and regulations, you can type 'diversabot rules' \n \n \
+                    If you would like to dispute this flag, please @ Thomas Wang in this thread."
     
+    client.chat_postMessage(
+        channel=channel_id,
+        thread_ts=message_ts,
+        text=reply
+    )
 
 
 # @app.event("reaction_added")
