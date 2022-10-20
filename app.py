@@ -153,7 +153,7 @@ def record_spot(message, client, logger):
         name = response["user"]["real_name"]
         df_spot_history = df_spot_history.append(
             {
-                'TIME' : message['ts'],
+                'TIME' : str(message['ts']),
                 'SPOTTER' : user,
                 'SPOTTED' : member_ids,
                 'MESSAGE' : message['text'],
