@@ -40,7 +40,6 @@ sh_spot_history = sh[0]
 df_spot_history = sh_spot_history.get_as_df(
     has_header=True,
     index_column=None,
-    nuumerize=True,
     include_tailing_empty=False,
     include_tailing_empty_rows=False
 )
@@ -275,6 +274,11 @@ def post_leaderboard(message, client):
         blocks=blocks
     )
 
+@app.message("diversabot flag")
+def flag_spot(message, client, logger):
+    logger.warn(message)
+    
+
 
 # @app.event("reaction_added")
 # def flag_spot(event, client, logger):
@@ -299,15 +303,6 @@ def post_leaderboard(message, client):
 #         thread_ts=spot_ts,
 #         text=reply
 #     )
-
-
-@app.event("reaction_added")
-def flag_spot(body, logger):
-    logger.warning(f"Request body: {body}")
-
-@app.event("reaction_removed")
-def flag_spot(body, logger):
-    logger.warning(f"Request body: {body}")
 
 
 @app.error
