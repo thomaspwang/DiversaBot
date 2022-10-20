@@ -289,7 +289,7 @@ def flag_spot(message, client, logger):
         if spot_ts not in df_spot_history['TIME'].values:
             reply = f"{random_greeting()} <@{flagger}>, this is not a valid DiversaSpot to flag!"
         else:
-            spotter = df_spot_history.loc[df_spot_history['TIME'] == spot_ts, 'SPOTTER'][0]
+            spotter = df_spot_history.loc[df_spot_history['TIME'] == spot_ts, 'SPOTTER'].values[0]
             df_spot_history.loc[df_spot_history['TIME'] == spot_ts, 'FLAGGED'] = "TRUE"
             save_spot_history()
             reply = f"{random_greeting()} <@{spotter}>, this spot has been flagged by <@{flagger}> as they believe it is in violation of the \
