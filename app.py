@@ -377,7 +377,7 @@ def post_rules(message, client):
 			"type": "section",
 			"text": {
 				"type": "mrkdwn",
-				"text": "*Rule 5:* The project team with the most combined DiversaSpot will be rewarded custom embroidered bucket hats, along the person with the most DiversaSpots."
+				"text": "*Rule 5:* The project team with the most combined DiversaSpot will be rewarded with ... TBD"
 			}
 		}
 	]
