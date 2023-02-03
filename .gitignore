@@ -1,0 +1,5 @@
+.dockerignore
+.ipynb_checkpoints/
+.env
+google-credentials.json
+venv/

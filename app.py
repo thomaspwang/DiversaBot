@@ -179,7 +179,8 @@ def post_leaderboard(message, client):
     leaderboard = spotter_leaderboard()
     leaderboard = leaderboard.reset_index()
     message_text = ""
-    for i in range(10):
+    size = len(leaderboard)
+    for i in range(min(size, 10)):
         row = leaderboard.iloc[i]
         message_text += f"*#{i + 1}: {row['NAME']}* with {row['COUNT']} spots \n"
     
@@ -234,7 +235,8 @@ def post_leaderboard(message, client):
     name = "None"
     message_text = ""
     rank = leaderboard.index[leaderboard['SPOTTER']==user].tolist()[0]
-    for i in range(max(0, rank - 4), rank + 5):
+    size = len(leaderboard)
+    for i in range(max(0, rank - 4), min(size, rank + 5)):
         row = leaderboard.iloc[i]
         if row['SPOTTER'] == user:
             message_text += f"_*#{i + 1}: {row['NAME']} with {row['COUNT']} spots*_ \n"
