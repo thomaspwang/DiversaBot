@@ -263,8 +263,7 @@ def post_leaderboard(message, client):
     
     channel_id = message["channel"]
 
-    message_text_2 = f"You've been spotted a total of {num_spots} times!\n\
-        <@{max_spotter_id}> has spotted you the most with {max_spotter_count} spots."
+    message_text_2 = f"You've been spotted a total of {num_spots} times!\n<@{max_spotter_id}> has spotted you the most with {max_spotter_count} spots."
 
     blocks = [
         {
