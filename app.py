@@ -249,7 +249,6 @@ def post_leaderboard(message, client):
             message_text += f"#{i + 1}: {row['NAME']} with {row['COUNT']} spots \n"
 
     # Spot stats
-    df = df_spot_history.copy(deep=True)
     df = df_spot_history[df_spot_history["FLAGGED"] == "FALSE"]
     df['SPOTTED'] = df['SPOTTED'].apply(ast.literal_eval)
     df = df.explode('SPOTTED')
