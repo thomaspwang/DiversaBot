@@ -7,6 +7,7 @@ import re
 import logging
 import random
 from datetime import date
+import ast
 
 '''
 TO-DOs
@@ -229,11 +230,14 @@ def post_leaderboard(message, client):
 
 @app.message("diversabot stats")
 def post_leaderboard(message, client):
-    leaderboard = spotter_leaderboard()
-    leaderboard = leaderboard.reset_index()
+    global df_spot_history
     user = message["user"]
     name = "None"
     message_text = ""
+
+    # Leaderboard
+    leaderboard = spotter_leaderboard()
+    leaderboard = leaderboard.reset_index()
     rank = leaderboard.index[leaderboard['SPOTTER']==user].tolist()[0]
     size = len(leaderboard)
     for i in range(max(0, rank - 4), min(size, rank + 5)):
@@ -243,8 +247,25 @@ def post_leaderboard(message, client):
             name = row['NAME']
         else:
             message_text += f"#{i + 1}: {row['NAME']} with {row['COUNT']} spots \n"
+
+    # Spot stats
+    df = df_spot_history.copy(deep=True)
+    df = df_spot_history[df_spot_history["FLAGGED"] == "FALSE"]
+    df['SPOTTED'] = df['SPOTTED'].apply(ast.literal_eval)
+    df = df.explode('SPOTTED')
+    df = df[df['SPOTTED'] == user]
+
+    num_spots = len(df)
+
+    df = df.groupby('SPOTTER').count()
+
+    max_spotter_id = df.idxmax()['TIME']
+    max_spotter_count = df.loc[max_spotter_id]['TIME']
     
     channel_id = message["channel"]
+
+    message_text_2 = f"You've been spotted a total of {num_spots} times!\n\
+        <@{max_spotter_id}> has spotted you the most with {max_spotter_count} spots."
 
     blocks = [
         {
@@ -268,6 +289,13 @@ def post_leaderboard(message, client):
             "text": {
                 "type": "mrkdwn",
                 "text": message_text
+            }
+        },
+        {
+            "type": "section",
+            "text": {
+                "type": "mrkdwn",
+                "text": message_text_2
             }
         }
     ]
