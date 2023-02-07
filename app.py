@@ -351,8 +351,6 @@ def post_miss(message, client):
 
     print(tagged)
 
-    message_text = ""
-
     if len(tagged) == 0:
         message_text = "Please tag someone!"
         blocks = {
@@ -405,11 +403,11 @@ def post_miss(message, client):
                         "text": "It's okay, here's a picture of them to remind you <3"
                     }
                 },
-                {
-                    "type": "image",
-                    "image_url": image_url,
-                    "alt_text": "hi"
-                }
+                # {
+                #     "type": "image",
+                #     "image_url": image_url,
+                #     "alt_text": "picture of your fav person"
+                # }
             ]
         }
 
