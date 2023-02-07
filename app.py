@@ -118,6 +118,11 @@ def spotter_leaderboard_position_text(user: str) -> str:
     user_in_front_id = leaderboard.index[leaderboard['RANK'] == int(user_rank) - 1].tolist()[0][0]
     return f"You're currently #{int(user_rank)} on the leaderboard, right behind <@{user_in_front_id}>."
 
+def find_name(user_id : str) -> str:
+    global app
+
+    return app.client.users_profile_get(user=user_id)['profile']['real_name']
+
 
 """
 
@@ -233,6 +238,7 @@ def post_stats(message, client):
     global df_spot_history
     user = message["user"]
     message_text = ""
+    name = find_name(user)
 
     # Leaderboard
     if user not in df_spot_history['SPOTTER']:
@@ -265,14 +271,14 @@ def post_stats(message, client):
     
     channel_id = message["channel"]
 
-    message_text_2 = f":camera_with_flash: You've been spotted a total of {num_spots} times!\n\n:partyblob: <@{max_spotter_id}> has spotted you the most with {max_spotter_count} spots."
+    message_text_2 = f":camera_with_flash: You've been spotted a total of {num_spots} times!\n\n:heart_eyes: <@{max_spotter_id}> has spotted you the most with {max_spotter_count} spots."
 
     blocks = [
         {
             "type": "header",
             "text": {
                 "type": "plain_text",
-                "text": f":trophy:  DiversaSpot Stats for <@{user}> :trophy:"
+                "text": f":trophy:  DiversaSpot Stats for {name} :chart_with_upwards_trend:"
             }
         },
         {
