@@ -236,17 +236,20 @@ def post_leaderboard(message, client):
     message_text = ""
 
     # Leaderboard
-    leaderboard = spotter_leaderboard()
-    leaderboard = leaderboard.reset_index()
-    rank = leaderboard.index[leaderboard['SPOTTER']==user].tolist()[0]
-    size = len(leaderboard)
-    for i in range(max(0, rank - 4), min(size, rank + 5)):
-        row = leaderboard.iloc[i]
-        if row['SPOTTER'] == user:
-            message_text += f"_*#{i + 1}: {row['NAME']} with {row['COUNT']} spots*_ \n"
-            name = row['NAME']
-        else:
-            message_text += f"#{i + 1}: {row['NAME']} with {row['COUNT']} spots \n"
+    if user not in df_spot_history['SPOTTER']:
+        message = "You have not spotted anyone yet. :("
+    else:
+        leaderboard = spotter_leaderboard()
+        leaderboard = leaderboard.reset_index()
+        rank = leaderboard.index[leaderboard['SPOTTER']==user].tolist()[0]
+        size = len(leaderboard)
+        for i in range(max(0, rank - 4), min(size, rank + 5)):
+            row = leaderboard.iloc[i]
+            if row['SPOTTER'] == user:
+                message_text += f"_*#{i + 1}: {row['NAME']} with {row['COUNT']} spots*_ \n"
+                name = row['NAME']
+            else:
+                message_text += f"#{i + 1}: {row['NAME']} with {row['COUNT']} spots \n"
 
     # Spot stats
     df = df_spot_history[df_spot_history["FLAGGED"] == "FALSE"]
