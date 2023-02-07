@@ -353,14 +353,14 @@ def post_miss(message, client):
     print(tagged)
 
     if len(tagged) == 0:
-        message_text = "Please tag someone!"
+        message_text = "Please tag someone to use this command!"
         client.chat_postMessage(
             channel=channel_id,
             thread_ts=message_ts,
             text=message_text
         )
     elif len(tagged) > 1:
-        message_text = "Please tag only one person!"
+        message_text = "Please tag only one person to use this command!"
         client.chat_postMessage(
             channel=channel_id,
             thread_ts=message_ts,
@@ -374,9 +374,12 @@ def post_miss(message, client):
         df = df.explode('SPOTTED')
         df = df[df['SPOTTED'] == tagged_user]
 
-        image_url = df.iloc[random.randint(0, len(df))]['IMAGE']
+        message_text = f"Aww ... you miss {find_name(tagged_user)}? :pleading_face::point_right::point_left:"
 
-        message_text = f"Aww ... you miss <@{tagged_user}>? :point_right::point_left::pleading_face:"
+        if (len(df) == 0):
+            image_url = "Too bad ... they're too elusive and haven't been spotted yet :("
+        else:
+            image_url = df.iloc[random.randint(0, len(df))]['IMAGE']
 
         blocks = [
                 {
