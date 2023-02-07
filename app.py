@@ -241,7 +241,7 @@ def post_stats(message, client):
     name = find_name(user)
 
     # Leaderboard
-    if user not in df_spot_history['SPOTTER']:
+    if user not in df_spot_history['SPOTTER'].values:
         message_text = "You have not spotted anyone yet :("
     else:
         leaderboard = spotter_leaderboard()
@@ -341,6 +341,8 @@ def flag_spot(message, client, logger):
         thread_ts=message_ts,
         text=reply
     )
+
+@app.message("diversabot ")
 
 
 # @app.event("reaction_added")
