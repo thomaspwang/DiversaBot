@@ -348,35 +348,24 @@ def post_miss(message, client):
     user = message["user"]
     tagged = find_all_mentions(message['text'])
     channel_id = message['channel']
+    message_ts = message['ts']
 
     print(tagged)
 
     if len(tagged) == 0:
         message_text = "Please tag someone!"
-        blocks = {
-            "blocks": [
-                {
-                    "type": "section",
-                    "text": {
-                        "type": "mrkdwn",
-                        "text": message_text
-                    }
-                }
-            ]
-        }
+        client.chat_postMessage(
+            channel=channel_id,
+            thread_ts=message_ts,
+            text=message_text
+        )
     elif len(tagged) > 1:
         message_text = "Please tag only one person!"
-        blocks = {
-            "blocks": [
-                {
-                    "type": "section",
-                    "text": {
-                        "type": "mrkdwn",
-                        "text": message_text
-                    }
-                }
-            ]
-        }
+        client.chat_postMessage(
+            channel=channel_id,
+            thread_ts=message_ts,
+            text=message_text
+        )
     else:
         tagged_user = tagged[0]
 
@@ -389,8 +378,7 @@ def post_miss(message, client):
 
         message_text = f"Aww ... you miss <@{tagged_user}>? :point_right::point_left::pleading_face:"
 
-        blocks = {
-            "blocks": [
+        blocks = [
                 {
                     "type": "section",
                     "text": {
@@ -411,12 +399,11 @@ def post_miss(message, client):
                     "alt_text": "picture of your fav person"
                 }
             ]
-        }
 
-    client.chat_postMessage(
-        channel=channel_id,
-        blocks=blocks
-    )
+        client.chat_postMessage(
+            channel=channel_id,
+            blocks=blocks
+        )
 
 
     
