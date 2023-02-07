@@ -229,7 +229,7 @@ def post_leaderboard(message, client):
 
 
 @app.message("diversabot stats")
-def post_leaderboard(message, client):
+def post_stats(message, client):
     global df_spot_history
     user = message["user"]
     name = "None"
