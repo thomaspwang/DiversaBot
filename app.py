@@ -349,6 +349,8 @@ def post_miss(message, client):
     tagged = find_all_mentions(message['text'])
     channel_id = message['channel']
 
+    print(tagged)
+
     message_text = ""
 
     if len(tagged) == 0:
