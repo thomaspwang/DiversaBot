@@ -342,7 +342,7 @@ def flag_spot(message, client, logger):
         text=reply
     )
 
-@app.message("diversabot ")
+# @app.message("diversabot ")
 
 
 # @app.event("reaction_added")
