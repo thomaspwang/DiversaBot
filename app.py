@@ -443,6 +443,77 @@ def post_miss(message, client):
 #         text=reply
 #     )
 
+@app.message("diversabot help")
+def post_help(message, client):
+    blocks = [
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "Hi there! 👋 I'm DiversaBot. \n\nHere are some things I can do:"
+			}
+		},
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "*📸 DiversaSpotting:* Found the DiversaFam in the wild? Upload a picture of them along and tag them in the #diversaspotting channel to secure those delicious points."
+			}
+		},
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "*🚩 Flag:* Detected an illegal DiversaSpot? Reply *diversabot flag* in the thread."
+			}
+		},
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "*🏆 Leaderboard:* If you want to see the top 10 DiversaSpotters, type *diversaspot leaderboard*."
+			}
+		},
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "*📈 Stats:* If you want to view your own stats, type *diversabot stats*."
+			}
+		},
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "*🥺 Miss:* Miss anyone? I'll give you a random photo of them if type *diversabot miss @ThatPerson*."
+			}
+		},
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "*📖 Rules:* Need a refresh on DiversaSpotting rules? Type *diversabot rules*."
+			}
+		},
+		{
+			"type": "divider"
+		},
+		{
+			"type": "context",
+			"elements": [
+				{
+					"type": "mrkdwn",
+					"text": "❓ View my commands anytime by typing *diversabot help*!"
+				}
+			]
+		}
+	]
+    channel_id = message["channel"]
+    client.chat_postMessage(
+        channel=channel_id,
+        blocks=blocks
+    )
+
 @app.message("diversabot rules")
 def post_rules(message, client):
     blocks = [
