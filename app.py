@@ -342,7 +342,82 @@ def flag_spot(message, client, logger):
         text=reply
     )
 
-# @app.message("diversabot ")
+@app.message("diversabot miss")
+def post_miss(message, client):
+    global df_spot_history
+    user = message["user"]
+    tagged = find_all_mentions(message['text'])
+    channel_id = message['channel']
+
+    message_text = ""
+
+    if len(tagged) == 0:
+        message_text = "Please tag someone!"
+        blocks = {
+            "blocks": [
+                {
+                    "type": "section",
+                    "text": {
+                        "type": "mrkdwn",
+                        "text": message_text
+                    }
+                }
+            ]
+        }
+    if len(tagged) > 1:
+        message_text = "Please tag only one person!"
+        blocks = {
+            "blocks": [
+                {
+                    "type": "section",
+                    "text": {
+                        "type": "mrkdwn",
+                        "text": message_text
+                    }
+                }
+            ]
+        }
+    else:
+        tagged_user = tagged[0]
+
+        df = df_spot_history[df_spot_history["FLAGGED"] == "FALSE"]
+        df['SPOTTED'] = df['SPOTTED'].apply(ast.literal_eval)
+        df = df.explode('SPOTTED')
+        df = df[df['SPOTTED'] == tagged_user]
+
+        image_url = df.iloc[random.randint(0, len(df))]['IMAGE']
+
+        blocks = {
+            "blocks": [
+                {
+                    "type": "section",
+                    "text": {
+                        "type": "mrkdwn",
+                        "text": f"Aww ... you miss <@{tagged_user}>? :point_right::point_left::pleading_face:"
+                    }
+                },
+                {
+                    "type": "section",
+                    "text": {
+                        "type": "mrkdwn",
+                        "text": "It's okay, here's a picture of them to remind you <3"
+                    }
+                },
+                {
+                    "type": "image",
+                    "image_url": image_url,
+                    "alt_text": "hi"
+                }
+            ]
+        }
+
+    client.chat_postMessage(
+        channel=channel_id,
+        blocks=blocks
+    )
+
+
+    
 
 
 # @app.event("reaction_added")
