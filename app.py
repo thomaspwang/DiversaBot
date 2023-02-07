@@ -237,7 +237,7 @@ def post_stats(message, client):
 
     # Leaderboard
     if user not in df_spot_history['SPOTTER']:
-        message = "You have not spotted anyone yet. :("
+        message_text = "You have not spotted anyone yet. :("
     else:
         leaderboard = spotter_leaderboard()
         leaderboard = leaderboard.reset_index()
