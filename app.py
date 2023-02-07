@@ -266,12 +266,17 @@ def post_stats(message, client):
 
     df = df.groupby('SPOTTER').count()
 
-    max_spotter_id = df.idxmax()['TIME']
-    max_spotter_count = df.loc[max_spotter_id]['TIME']
+    if len(df) == 0:
+        message_text_2 = ":camera_with_flash: No one has spotted you yet ... so sneaky of you!"
+
+    else:
+        max_spotter_id = df.idxmax()['TIME']
+        max_spotter_count = df.loc[max_spotter_id]['TIME']
+        message_text_2 = f":camera_with_flash: You've been spotted a total of {num_spots} times!\n\n:heart_eyes: *{find_name(max_spotter_id)}* has spotted you the most with {max_spotter_count} spots."
+
     
     channel_id = message["channel"]
 
-    message_text_2 = f":camera_with_flash: You've been spotted a total of {num_spots} times!\n\n:heart_eyes: *{find_name(max_spotter_id)}* has spotted you the most with {max_spotter_count} spots."
 
     blocks = [
         {
