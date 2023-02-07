@@ -394,10 +394,17 @@ def post_miss(message, client):
                     }
                 },
                 {
-                    "type": "image",
-                    "image_url": image_url,
-                    "alt_text": "picture of your fav person"
+                    "type": "section",
+                    "text": {
+                        "type": "mrkdwn",
+                        "text": image_url
+                    }
                 }
+                # {
+                #     "type": "image",
+                #     "image_url": image_url,
+                #     "alt_text": "picture of your fav person"
+                # }
             ]
 
         client.chat_postMessage(
