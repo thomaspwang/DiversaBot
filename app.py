@@ -232,12 +232,11 @@ def post_leaderboard(message, client):
 def post_stats(message, client):
     global df_spot_history
     user = message["user"]
-    name = "None"
     message_text = ""
 
     # Leaderboard
     if user not in df_spot_history['SPOTTER']:
-        message_text = "You have not spotted anyone yet. :("
+        message_text = "You have not spotted anyone yet :("
     else:
         leaderboard = spotter_leaderboard()
         leaderboard = leaderboard.reset_index()
@@ -266,14 +265,14 @@ def post_stats(message, client):
     
     channel_id = message["channel"]
 
-    message_text_2 = f"You've been spotted a total of {num_spots} times!\n<@{max_spotter_id}> has spotted you the most with {max_spotter_count} spots."
+    message_text_2 = f":camera_with_flash: You've been spotted a total of {num_spots} times!\n\n:partyblob: <@{max_spotter_id}> has spotted you the most with {max_spotter_count} spots."
 
     blocks = [
         {
             "type": "header",
             "text": {
                 "type": "plain_text",
-                "text": f":trophy:  DiversaSpot Stats for {name} :trophy:"
+                "text": f":trophy:  DiversaSpot Stats for <@{user}> :trophy:"
             }
         },
         {
