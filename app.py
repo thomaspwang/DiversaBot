@@ -364,7 +364,7 @@ def post_miss(message, client):
                 }
             ]
         }
-    if len(tagged) > 1:
+    elif len(tagged) > 1:
         message_text = "Please tag only one person!"
         blocks = {
             "blocks": [
@@ -387,13 +387,15 @@ def post_miss(message, client):
 
         image_url = df.iloc[random.randint(0, len(df))]['IMAGE']
 
+        message_text = f"Aww ... you miss <@{tagged_user}>? :point_right::point_left::pleading_face:"
+
         blocks = {
             "blocks": [
                 {
                     "type": "section",
                     "text": {
                         "type": "mrkdwn",
-                        "text": f"Aww ... you miss <@{tagged_user}>? :point_right::point_left::pleading_face:"
+                        "text": message_text
                     }
                 },
                 {
@@ -403,11 +405,11 @@ def post_miss(message, client):
                         "text": "It's okay, here's a picture of them to remind you <3"
                     }
                 },
-                # {
-                #     "type": "image",
-                #     "image_url": image_url,
-                #     "alt_text": "picture of your fav person"
-                # }
+                {
+                    "type": "image",
+                    "image_url": image_url,
+                    "alt_text": "picture of your fav person"
+                }
             ]
         }
 
