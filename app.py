@@ -116,7 +116,7 @@ def spotter_leaderboard_position_text(user: str) -> str:
         return "Woohoo, you're 1st on the leaderboard." 
 
     user_in_front_id = leaderboard.index[leaderboard['RANK'] == int(user_rank) - 1].tolist()[0][0]
-    return f"You're currently #{int(user_rank)} on the leaderboard, right behind {find_name(user_in_front_id)}"
+    return f"You're currently #{int(user_rank)} on the leaderboard, right behind *{find_name(user_in_front_id)}*"
 
 def find_name(user_id : str) -> str:
     global app
@@ -271,14 +271,14 @@ def post_stats(message, client):
     
     channel_id = message["channel"]
 
-    message_text_2 = f":camera_with_flash: You've been spotted a total of {num_spots} times!\n\n:heart_eyes: {find_name(max_spotter_id)} has spotted you the most with {max_spotter_count} spots."
+    message_text_2 = f":camera_with_flash: You've been spotted a total of {num_spots} times!\n\n:heart_eyes: *{find_name(max_spotter_id)}* has spotted you the most with {max_spotter_count} spots."
 
     blocks = [
         {
             "type": "header",
             "text": {
                 "type": "plain_text",
-                "text": f":trophy:  DiversaSpot Stats for {name} :chart_with_upwards_trend:"
+                "text": f":chart_with_upwards_trend: DiversaSpot Stats for {name} :chart_with_upwards_trend:"
             }
         },
         {
