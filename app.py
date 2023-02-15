@@ -258,7 +258,7 @@ def post_stats(message, client):
 
     # Spot stats
     df = df_spot_history[df_spot_history["FLAGGED"] == "FALSE"]
-    df['SPOTTED'] = df['SPOTTED'].apply(ast.literal_eval)
+    df['SPOTTED'] = df['SPOTTED'].apply(eval)
     df = df.explode('SPOTTED')
     df = df[df['SPOTTED'] == user]
 
