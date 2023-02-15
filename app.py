@@ -370,7 +370,7 @@ def post_miss(message, client):
         tagged_user = tagged[0]
 
         df = df_spot_history[df_spot_history["FLAGGED"] == "FALSE"]
-        df['SPOTTED'] = df['SPOTTED'].apply(ast.literal_eval)
+        df['SPOTTED'] = df['SPOTTED'].apply(eval)
         df = df.explode('SPOTTED')
         df = df[df['SPOTTED'] == tagged_user]
 
