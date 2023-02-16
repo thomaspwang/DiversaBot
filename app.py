@@ -123,6 +123,13 @@ def find_name(user_id : str) -> str:
 
     return app.client.users_profile_get(user=user_id)['profile']['real_name']
 
+def eval_string_to_list(str_lst):
+    #str could be a string or a list, idk it's a bug this is a lazy fix
+    if type(str_lst) == str:
+        return eval(str_lst)
+    else:
+        return str_lst
+
 
 """
 
@@ -258,7 +265,7 @@ def post_stats(message, client):
 
     # Spot stats
     df = df_spot_history[df_spot_history["FLAGGED"] == "FALSE"]
-    df['SPOTTED'] = df['SPOTTED'].apply(eval)
+    df['SPOTTED'] = df['SPOTTED'].apply(eval_string_to_list)
     df = df.explode('SPOTTED')
     df = df[df['SPOTTED'] == user]
 
@@ -370,7 +377,7 @@ def post_miss(message, client):
         tagged_user = tagged[0]
 
         df = df_spot_history[df_spot_history["FLAGGED"] == "FALSE"]
-        df['SPOTTED'] = df['SPOTTED'].apply(eval)
+        df['SPOTTED'] = df['SPOTTED'].apply(eval_string_to_list)
         df = df.explode('SPOTTED')
         df = df[df['SPOTTED'] == tagged_user]
 
