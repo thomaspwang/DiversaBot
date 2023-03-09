@@ -255,7 +255,7 @@ def post_stats(message, client):
         leaderboard = spotter_leaderboard()
         rank = int(leaderboard[leaderboard['SPOTTER']==user]['RANK'].iloc[0])
         size = len(leaderboard)
-        for i in range(max(0, rank - 4), min(size, rank + 5)):
+        for i in range(max(0, rank - 5), min(size, rank + 4)):
             row = leaderboard.iloc[i]
             if row['SPOTTER'] == user:
                 message_text += f"_*#{i + 1}: {row['NAME']} with {row['COUNT']} spots*_ \n"
