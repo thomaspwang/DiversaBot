@@ -94,29 +94,31 @@ def random_greeting() -> str:
 def spotter_leaderboard():
     '''
     Returns a leaderboard dataframe for the most spots
-    columns = ['COUNT', 'RANK']
-    indexed by SPOTTER, NAME
+    columns = ['SPOTTER', 'COUNT', 'RANK', 'NAME']
+    indexed by number
     '''
     global df_spot_history
 
     df_spot_history = df_spot_history[df_spot_history["FLAGGED"] == "FALSE"]
-    counts = df_spot_history.groupby(['SPOTTER', 'NAME']).count()
+    counts = df_spot_history.groupby('SPOTTER').count()
     counts.rename(columns={'SPOTTED':'COUNT'}, inplace=True)
     counts = counts[['COUNT']]
     counts['RANK'] = counts['COUNT'].rank(ascending=False, method='dense')
     counts.sort_values(by='COUNT', inplace=True, ascending=False)
+    counts = counts.reset_index()
+    counts['NAME'] = counts['SPOTTER'].apply(find_name)
     return counts
 
 def spotter_leaderboard_position_text(user: str) -> str:
     '''Return text describing the leaderboard position of the user for number of spots, and the person you're right behind.'''
     leaderboard = spotter_leaderboard()
-    user_rank = leaderboard.loc[user]['RANK']
+    user_rank = int(leaderboard[leaderboard['SPOTTER'] == user]['RANK'].iloc[0])
 
-    if int(user_rank) == 1:
+    if user_rank == 1:
         return "Woohoo, you're 1st on the leaderboard." 
 
-    user_in_front_id = leaderboard.index[leaderboard['RANK'] == int(user_rank) - 1].tolist()[0][0]
-    return f"You're currently #{int(user_rank)} on the leaderboard, right behind *{find_name(user_in_front_id)}*"
+    user_in_front_id = leaderboard[leaderboard['RANK'] == user_rank - 1]['SPOTTER'].iloc[0]
+    return f"You're currently #{user_rank} on the leaderboard, right behind *{find_name(user_in_front_id)}*"
 
 def find_name(user_id : str) -> str:
     global app
@@ -190,7 +192,6 @@ def record_spot(message, client, logger):
 @app.message("diversabot leaderboard")
 def post_leaderboard(message, client):
     leaderboard = spotter_leaderboard()
-    leaderboard = leaderboard.reset_index()
     message_text = ""
     size = len(leaderboard)
     for i in range(min(size, 10)):
@@ -252,8 +253,7 @@ def post_stats(message, client):
         message_text = "You have not spotted anyone yet :("
     else:
         leaderboard = spotter_leaderboard()
-        leaderboard = leaderboard.reset_index()
-        rank = leaderboard.index[leaderboard['SPOTTER']==user].tolist()[0]
+        rank = leaderboard[leaderboard['SPOTTER']==user]['RANK']
         size = len(leaderboard)
         for i in range(max(0, rank - 4), min(size, rank + 5)):
             row = leaderboard.iloc[i]
@@ -356,8 +356,6 @@ def post_miss(message, client):
     tagged = find_all_mentions(message['text'])
     channel_id = message['channel']
     message_ts = message['ts']
-
-    print(tagged)
 
     if len(tagged) == 0:
         message_text = "Please tag someone to use this command!"
