@@ -253,7 +253,7 @@ def post_stats(message, client):
         message_text = "You have not spotted anyone yet :("
     else:
         leaderboard = spotter_leaderboard()
-        rank = leaderboard[leaderboard['SPOTTER']==user]['RANK']
+        rank = int(leaderboard[leaderboard['SPOTTER']==user]['RANK'].iloc[0])
         size = len(leaderboard)
         for i in range(max(0, rank - 4), min(size, rank + 5)):
             row = leaderboard.iloc[i]
