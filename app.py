@@ -103,8 +103,8 @@ def spotter_leaderboard():
     counts = df_spot_history.groupby('SPOTTER').count()
     counts.rename(columns={'SPOTTED':'COUNT'}, inplace=True)
     counts = counts[['COUNT']]
-    counts['RANK'] = counts['COUNT'].rank(ascending=False, method='dense')
     counts.sort_values(by='COUNT', inplace=True, ascending=False)
+    counts['RANK'] = counts['COUNT'].rank(ascending=False, method='first')
     counts = counts.reset_index()
     counts['NAME'] = counts['SPOTTER'].apply(find_name)
     return counts
