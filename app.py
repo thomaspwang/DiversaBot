@@ -187,6 +187,148 @@ def record_spot(message, client, logger):
         thread_ts=message_ts,
         text=reply
     )
+@app.message("diversabot team leaderboard")
+def post_team_leaderboard(message, client):
+    leaderboard = spotter_leaderboard()
+
+    teams = {
+        "Checkr" : [
+            "Emily Zhang",
+            "Priya Kamath",
+            "James Reyna",
+            "Andrew Crawley",
+            "Kaylene Son",
+            "Serah Almeyda",
+            "Nick Melamed",
+            "Evan Quan",
+            "Alba Joy",
+            "Marden Escobar Deleon"
+        ],
+        "Hi-Five" : [
+            "Sharon Jihn",
+            "Urvi Dhala",
+            "Thien-Kim Dang",
+            "Lily Yang",
+            "Trishala Jain",
+            "Bradley Tian",
+            "Ira Puri",
+            "Sera Goksal",
+            "Oliver Johansson",
+            "Gigi Huang"
+        ],
+        "Indoxi" : [
+            "Emily Xiao",
+            "Ruofu Li",
+            "Joanna Huynh",
+            "Enya Do",
+            "Patrick Zhu",
+            "No longer Prez",
+            "Soph Ma",
+            "Justin Li",
+            "Clara Tu",
+            "Rachel Hua"
+        ],
+        "Fabletics" : [
+            "Derrick Cai",
+            "Eileen Chang",
+            "Joshua Chuang",
+            "Ria Nakahara",
+            "Daewon Kwon",
+            "Joseph Schull",
+            "Dylan Huynh",
+            "Sameen Shah",
+            "Daniel Jiang",
+            "Caleb Kim",
+            "Manuel Neumayer"
+        ],
+        "Exec" : [
+            "Thomas Wang",
+            "Isabela Moise",
+            "Chloe Kim",
+            "Jeremy Li",
+            "Aidan Curran",
+            "Hanson Li",
+            "Michelle Tran"
+        ],
+        "Account Managers" : [
+            "Daniel Yao",
+            "Luke Wu",
+            "Joshua Paul"
+        ]
+    }
+    
+    people = {}
+    for ID in pd.unique(leaderboard["SPOTTER"]):
+        name = find_name(ID)
+        for team in teams:
+            if name in teams[team]:
+                people[ID] = team
+
+    
+    team_points = {
+        "Account Managers" : 0,
+        "Exec" : 0,
+        "Fabletics" : 0,
+        "Checkr" : 0,
+        "Indoxi" : 0,
+        "Hi-Five" : 0
+    }
+
+    for p, t in people.items():
+        points = int(leaderboard[leaderboard['SPOTTER'] == p]["COUNT"])
+        team_points[t] += points
+
+    team_points = dict(sorted(team_points.items(), key=lambda item: item[1], reverse = True))
+
+    message_text = ""
+    for team, points in team_points.items():
+        message_text += f"*{team}*: {points} spots \n\n"
+
+    blocks = [
+		{
+			"type": "header",
+			"text": {
+				"type": "plain_text",
+				"text": ":trophy:  DiversaSpot Leaderboard  :trophy:"
+			}
+		},
+		{
+			"type": "context",
+			"elements": [
+				{
+					"text": f"*{date.today()}*",
+					"type": "mrkdwn"
+				}
+			]
+		},
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": message_text
+			}
+		},
+        {
+			"type": "context",
+			"elements": [
+				{
+					"type": "mrkdwn",
+					"text": "To see your individual stats, type 'diversabot stats'!"
+				},
+                {
+					"type": "mrkdwn",
+					"text": "To see the individual leaderboard, type 'diversabot leaderboard!'"
+				}
+			]
+		}
+	]
+
+    channel_id = message["channel"]
+    client.chat_postMessage(
+        channel=channel_id,
+        blocks=blocks
+    )
+
 
 
 @app.message("diversabot leaderboard")
