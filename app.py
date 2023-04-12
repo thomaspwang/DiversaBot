@@ -621,6 +621,13 @@ def post_help(message, client):
 				"text": "*🏆 Leaderboard:* If you want to see the top 10 DiversaSpotters, type *diversaspot leaderboard*."
 			}
 		},
+        {
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "*🏆 Team Leaderboard:* If you want how teams are stacking against one another, type *diversaspot team leaderboard*."
+			}
+		},
 		{
 			"type": "section",
 			"text": {
