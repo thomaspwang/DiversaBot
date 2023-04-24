@@ -9,11 +9,9 @@ Features currently supported
 - replying "diversabot flag" to a diversaspot will flag the spot hearby negating it in any points calculation
 - typing "diversabot help" will display all commands
 - typing "diversabot rules" will display the diversapotting official rules and regulation
-
-
-Features to Implement
 - "diversabot leaderboard" displaying project team rankings
 
 TO-DOs
-- make the code not so shit
-- migrate from sheets to mongodb since slack deletes messages
+- migrate backend from sheets to mongodb since slack deletes messages
+- find a more reliable host server
+- refactor the code so it's not so jank
